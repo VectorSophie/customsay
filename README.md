@@ -19,7 +19,9 @@ cargo install yisangsay
 
 ### APT
 
-later, gimme some time
+sudo add-apt-repository ppa:vectorsophie/yisangsay
+sudo apt update
+sudo apt install yisangsay
 
 ### Manually Build
 
