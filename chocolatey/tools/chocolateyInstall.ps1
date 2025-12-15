@@ -9,7 +9,7 @@ $packageArgs = @{
   packageName    = $packageName
   unzipLocation  = $toolsDir
   url64bit       = $url64
-  checksum64     = ''  # Will be filled automatically by Chocolatey when submitting
+  checksum64     = 'e71521776c4e9bfaff48c1d98533c0f6be4cfba21a1868b13725118222530d79'
   checksumType64 = 'sha256'
 }
 
