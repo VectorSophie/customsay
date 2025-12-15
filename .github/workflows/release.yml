@@ -1,0 +1,138 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build ${{ matrix.target }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            archive: tar.gz
+
+          - os: ubuntu-latest
+            target: x86_64-pc-windows-gnu
+            archive: zip
+
+          - os: macos-latest
+            target: x86_64-apple-darwin
+            archive: tar.gz
+
+          - os: macos-latest
+            target: aarch64-apple-darwin
+            archive: tar.gz
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - name: Install cross-compilation tools (Windows)
+        if: matrix.target == 'x86_64-pc-windows-gnu'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y mingw-w64
+
+      - name: Build
+        run: cargo build --release --target ${{ matrix.target }}
+
+      - name: Package (Unix)
+        if: matrix.archive == 'tar.gz'
+        run: |
+          cd target/${{ matrix.target }}/release
+          if [ "${{ matrix.target }}" = "x86_64-pc-windows-gnu" ]; then
+            binary_name="yisangsay.exe"
+          else
+            binary_name="yisangsay"
+          fi
+
+          # Create package directory
+          pkg_dir="yisangsay-${{ matrix.target }}"
+          mkdir -p "$pkg_dir"
+
+          # Copy binary
+          cp "$binary_name" "$pkg_dir/"
+
+          # Copy frames directory
+          cp -r ../../../frames "$pkg_dir/"
+
+          # Copy README and LICENSE
+          cp ../../../README.md "$pkg_dir/"
+          cp ../../../LICENSE "$pkg_dir/"
+
+          # Create archive
+          tar czf "$pkg_dir.tar.gz" "$pkg_dir"
+          mv "$pkg_dir.tar.gz" ../../../
+
+      - name: Package (Windows)
+        if: matrix.archive == 'zip'
+        run: |
+          cd target/${{ matrix.target }}/release
+          binary_name="yisangsay.exe"
+
+          # Create package directory
+          pkg_dir="yisangsay-${{ matrix.target }}"
+          mkdir -p "$pkg_dir"
+
+          # Copy binary
+          cp "$binary_name" "$pkg_dir/"
+
+          # Copy frames directory
+          cp -r ../../../frames "$pkg_dir/"
+
+          # Copy README and LICENSE
+          cp ../../../README.md "$pkg_dir/"
+          cp ../../../LICENSE "$pkg_dir/"
+
+          # Create archive
+          sudo apt-get install -y zip
+          zip -r "$pkg_dir.zip" "$pkg_dir"
+          mv "$pkg_dir.zip" ../../../
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: yisangsay-${{ matrix.target }}
+          path: |
+            *.tar.gz
+            *.zip
+
+  release:
+    name: Create Release
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Move artifacts to root
+        run: |
+          find artifacts -type f \( -name "*.tar.gz" -o -name "*.zip" \) -exec mv {} . \;
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            *.tar.gz
+            *.zip
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
