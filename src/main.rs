@@ -16,18 +16,9 @@ async fn main() {
         Commands::Say { text } => {
             display_say_command(&STATIC_FRAME, &text);
         }
-        Commands::Animate {
-            text,
-            variant_number,
-        } => {
-            let frames = match variant_number {
-                1 => &*ANIMATE1_FRAMES,
-                _ => {
-                    eprintln!("Invalid variant number. Use 1.");
-                    std::process::exit(1);
-                }
-            };
-            
+        Commands::Animate { text } => {
+            let frames = &*ANIMATE1_FRAMES;
+
             if !check_terminal_size().unwrap_or(false) {
                 println!("your terminal is too small for yi sang");
                 return;

@@ -19,13 +19,10 @@ pub enum Commands {
         text: String,
     },
 
-    /// Display an animated Yi Sang (variant 1 or 2)
+    /// Display an animated Yi Sang
     Animate {
         /// The text for Yi Sang to say
         text: Option<String>,
-        /// Animation variant number (1 or 2, default: 1)
-        #[arg(short, long, default_value = "1")]
-        variant_number: u8,
     },
 
     /// Display Yi Sang in freestyle mode. Pretty cool for ricing btw.

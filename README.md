@@ -60,7 +60,7 @@ Usage: yisangsay <COMMAND>
 
 Commands:
   say        Display Yi Sang saying the provided text
-  animate    Display an animated Yi Sang (variant 1 or 2)
+  animate    Display an animated Yi Sang
   freestyle  Display Yi Sang in freestyle mode. Pretty cool for ricing btw
   help       Print this message or the help of the given subcommand(s)
 
