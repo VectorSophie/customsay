@@ -2,14 +2,14 @@ $ErrorActionPreference = 'Stop'
 
 $packageName = 'yisangsay'
 $toolsDir = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
-$version = '0.1.2'
+$version = '0.1.4'
 $url64 = "https://github.com/VectorSophie/yisangsay-independent/releases/download/v$version/yisangsay-x86_64-pc-windows-gnu.zip"
 
 $packageArgs = @{
   packageName    = $packageName
   unzipLocation  = $toolsDir
   url64bit       = $url64
-  checksum64     = 'e71521776c4e9bfaff48c1d98533c0f6be4cfba21a1868b13725118222530d79'
+  checksum64     = 'de2d70b0af32ce9b8f1fdd04d1ddc6101c2de74ccd533d8da476a4b47642d4ec'
   checksumType64 = 'sha256'
 }
 
