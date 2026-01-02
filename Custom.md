@@ -150,9 +150,3 @@ The setup script automatically:
 - If it does, see the Manual Setup section below
 
 ---
-
-## Manual Setup (Advanced)
-
-The rest of this guide covers the manual process for advanced users who want more control or need to troubleshoot issues.
-
-**this guide is written with linux priority. I dont know how shite works on mac**
