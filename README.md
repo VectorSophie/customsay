@@ -1,62 +1,90 @@
-# yisangsay-rs
+## Creating Your Own Custom Version
 
-Yisangsay is a CLI program like cowsay, but instead of a talking cow, it's Yi Sang from Limbus Company!
+Want to create your own version with a different character? You can easily convert any GIF into a custom CLI tool!
 
-## Features
+### Quick Start
 
-- Written in Rust!
-- Talking ASCII art of Yi Sang
-- Animated ASCII art of Yi Sang
-- Freestyle changing animation of Yi Sang
+1. **Clone this repository:**
+   ```sh
+   git clone https://github.com/VectorSophie/yisangsay-independent.git customsay
+   cd customsay
+   ```
 
-## Installation
+2. **Place your GIF in the project root** (e.g., `mygif.gif`)
 
-### Cargo (All platforms)
+3. **Run the setup script:**
 
-```sh
-cargo install yisangsay
-```
+   **Linux/macOS:**
+   ```sh
+   chmod +x setup.sh
+   ./setup.sh mygif.gif mycustomsay 64
+   ```
 
-### Windows
+   **Windows (PowerShell):**
+   ```powershell
+   .\setup.ps1 mygif.gif mycustomsay 64
+   ```
 
-#### Chocolatey (Recommended)
+   Parameters:
+   - `mygif.gif` - Path to your GIF file
+   - `mycustomsay` - Name for your CLI tool (optional, default: customsay)
+   - `64` - ASCII art width in characters (optional, default: 64)
 
-```powershell
-choco install yisangsay
-```
+4. **Test and build:**
+   ```sh
+   cargo run -- animate "Hello World"
+   cargo build --release
+   cargo install --path .
+   ```
 
-#### Manual Download
-Download the latest Windows release from [GitHub Releases](https://github.com/VectorSophie/yisangsay-independent/releases) and extract to a directory in your PATH.
+5. **Use your custom tool:**
+   ```sh
+   mycustomsay animate "Your message here"
+   ```
 
-### Linux
+### Prerequisites
 
-#### APT (Ubuntu/Debian)
+The setup script requires:
+- **ImageMagick** - For extracting GIF frames
+  - Windows: `choco install imagemagick`
+  - macOS: `brew install imagemagick`
+  - Linux: `sudo apt install imagemagick`
 
-```sh
-sudo add-apt-repository ppa:vectorsophie/yisangsay
-sudo apt update
-sudo apt install yisangsay
-```
+- **ASCII Converter** - One of the following:
+  - `jp2a` (recommended for Linux): `sudo apt install jp2a`
+  - `ascii-image-converter` (cross-platform): `go install github.com/TheZoraiz/ascii-image-converter@latest`
 
-#### Manual Download
-Download the latest Linux release from [GitHub Releases](https://github.com/VectorSophie/yisangsay-independent/releases).
+### What the Setup Script Does
 
-### macOS
+1. Extracts all frames from your GIF
+2. Converts each frame to ASCII art
+3. Auto-generates `src/frames.rs` with the correct frame count
+4. Updates `Cargo.toml` with your tool name
+5. Updates CLI configuration
 
-Download the latest macOS release from [GitHub Releases](https://github.com/VectorSophie/yisangsay-independent/releases).
+### Tips for Best Results
 
-### Build from Source
+- **ASCII Width:**
+  - Small/compact: 40-50 characters
+  - Medium (default): 64 characters
+  - Large/detailed: 80-100 characters
 
-```sh
-git clone https://github.com/VectorSophie/yisangsay-independent.git
-cd yisangsay-independent
-cargo build -r
-```
+- **GIF Quality:**
+  - Simple, high-contrast GIFs work best
+  - Avoid very detailed or noisy GIFs
+  - Test different widths to find the best look
+
+- **Frame Timing:**
+  - Edit `src/frames.rs` after generation to adjust timing
+  - Default: 100ms per frame
+  - Fast: 50-75ms, Slow: 150-200ms
+
+For manual setup and advanced customization, see [Custom.md](Custom.md)
 
 ## Usage
 
 ```
-Usage: yisangsay <COMMAND>
+Usage: customsay <COMMAND>
 
 Commands:
   say        Display Yi Sang saying the provided text

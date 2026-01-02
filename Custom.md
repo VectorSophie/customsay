@@ -1,168 +1,127 @@
 # A customization guide for yisangsay
 
-**this guide is written with linxu priority. I dont know how shite works on mac**
+Turn any GIF into a custom CLI tool like yisangsay!
 
-## 1. Converting GIF to ASCII Art Frames
+## Automated Setup (Recommended)
 
-To replace the current ASCII frames with frames extracted from a custom gif, you must:
+The easiest way to create a custom version is to use the provided setup scripts.
 
-### Step 1: Extract GIF Frames
+### Prerequisites
 
-Use ImageMagick to extract individual frames from the GIF:
+Install these tools first:
 
-```bash
-# Install ImageMagick (if not already installed)
-# Windows (with chocolatey): choco install imagemagick
-# Linux: sudo apt install imagemagick
-
-# Extract frames
-mkdir -p frames
-cd frames
-magick custom.gif -coalesce frame_%03d.png
-cd ..
-```
-
-This will create numbered PNG files (frame_000.png, frame_001.png, etc.)
-
-**Note:** frame_000 will be used as the static frame, and frame_001 onwards will be used for animations.
-
-### Step 2: Convert Frames to ASCII
-
-Use one of these tools to convert each frame to ASCII art:
-
-#### Option A: jp2a (Recommended for Linux)
-```bash
-# Install jp2a
-# Linux: sudo apt install jp2a
-
-# Convert each frame (adjust width to 64 characters)
-mkdir -p frames_ascii
-for file in frames/frame_*.png; do
-    base=$(basename "$file" .png)
-    jp2a --width=64 "$file" > "frames_ascii/$base.txt"
-done
-
-# Move ASCII frames to the frames directory
-mv frames_ascii/*.txt frames/
-rm -rf frames_ascii
-```
-
-#### Option B: ascii-image-converter (Cross-platform)
-```bash
-# Install
+**Windows:**
+```powershell
+choco install imagemagick
 go install github.com/TheZoraiz/ascii-image-converter@latest
-
-# Convert frames
-mkdir -p frames_ascii
-for file in frames/frame_*.png; do
-    base=$(basename "$file" .png)
-    ascii-image-converter "$file" --width 64 --save-txt --output "frames_ascii/$base.txt"
-done
-
-# Move ASCII frames
-mv frames_ascii/*.txt frames/
-rm -rf frames_ascii
 ```
 
-**Tips for better ASCII art:**
-- **Width recommendations:**
-  - Small/compact: 40-50 characters
+**macOS:**
+```bash
+brew install imagemagick
+go install github.com/TheZoraiz/ascii-image-converter@latest
+```
+
+**Linux (Ubuntu/Debian):**
+```bash
+sudo apt install imagemagick jp2a
+```
+
+### Quick Start
+
+1. **Get your GIF ready** - Place it in the project root (e.g., `mygif.gif`)
+
+2. **Run the setup script:**
+
+   **Linux/macOS:**
+   ```bash
+   chmod +x setup.sh
+   ./setup.sh mygif.gif mycustomsay 64
+   ```
+
+   **Windows:**
+   ```powershell
+   .\setup.ps1 mygif.gif mycustomsay 64
+   ```
+
+   **Parameters:**
+   - `mygif.gif` - Path to your GIF file
+   - `mycustomsay` - Name for your CLI tool (optional, default: customsay)
+   - `64` - ASCII art width in characters (optional, default: 64)
+
+3. **Build and install:**
+   ```bash
+   cargo build --release
+   cargo install --path .
+   ```
+
+4. **Enjoy!**
+   ```bash
+   mycustomsay animate "Hello World!"
+   mycustomsay say "I made this!"
+   ```
+
+### What the Script Does
+
+The setup script automatically:
+- Extracts all frames from your GIF
+- Converts each frame to ASCII art
+- Generates `src/frames.rs` with correct frame count
+- Updates `Cargo.toml` with your tool name
+- Updates `src/cli.rs` with your CLI name
+
+### Examples
+
+```bash
+# Create a tool called "dogosay" from dog.gif with 80-character width
+./setup.sh dog.gif dogosay 80
+
+# Create "catcli" from cat.gif with default 64-character width
+./setup.sh cat.gif catcli
+
+# On Windows with PowerShell
+.\setup.ps1 meme.gif memesay 50
+```
+
+### Tips for Best Results
+
+- **ASCII Width:** Try different values (40-100) to see what looks best
+  - Small/compact: 40-50 characters (faster, less detail, fits smaller terminals)
   - Medium (default): 64 characters
-  - Large/detailed: 80-100 characters
-- Try different ASCII converters - each produces different results
-- For colored output, jp2a supports `--color` flag
-- Manually edit frames for better quality if needed
-- Test different frame rates (see Step 3)
+  - Large/detailed: 80-100 characters (slower, more detail, needs bigger terminal)
 
-For publishing, the git repo will only include the frames folder with .txt files, not the source PNG/GIF files.
+- **Best GIFs:** Simple, high-contrast GIFs with clear subjects work best
+  - Avoid very detailed or noisy GIFs
+  - Test different widths to find the best look
 
-### Step 3: Update the Project
-
-After generating your ASCII frames, you need to update `src/frames.rs`:
-
-#### 3.1: Count Your Frames
-```bash
-# Count animation frames (excluding frame_000.txt which is static)
-ls frames/frame_*.txt | grep -v frame_000 | wc -l
-```
-
-Let's say you have **N** animation frames (e.g., 29 frames from frame_001 to frame_029).
-
-#### 3.2: Update src/frames.rs
-
-Open `src/frames.rs` and update:
-
-**A) Update the array size:**
-```rust
-// Change [&str; 29] to [&str; N] where N is your frame count
-const ANIMATE_FRAMES_STR: [&str; N] = [
-    include_str!("../frames/frame_001.txt"),
-    include_str!("../frames/frame_002.txt"),
-    // ... add all your frames up to frame_N
-];
-```
-
-**B) Add/remove frame entries:**
-- If you have fewer frames, remove the extra `include_str!` lines
-- If you have more frames, add more `include_str!` lines following the pattern
-
-**C) Update the interval array:**
-```rust
-// Change [100; 29] to [100; N] where N matches your frame count
-interval_ms: Arc::new([100; N]),
-```
-
-The number `100` is the milliseconds per frame. Adjust for different speeds:
-- Fast animation: 50-75ms
-- Normal: 100ms
-- Slow: 150-200ms
-
-**Example for 15 frames:**
-```rust
-const ANIMATE_FRAMES_STR: [&str; 15] = [
-    include_str!("../frames/frame_001.txt"),
-    include_str!("../frames/frame_002.txt"),
-    // ... through frame_015.txt
-];
-
-// In the lazy_static block:
-interval_ms: Arc::new([100; 15]),  // 15 frames at 100ms each
-```
-
-**Example for variable frame timing:**
-```rust
-// Different timing for each frame
-interval_ms: Arc::new([150, 75, 75, 200, 100, 100, 150, ...]),  // Must match frame count
-```
-
-#### 3.3: Test Your Animation
-```bash
-# Build the project
-cargo build --release
-
-# Test animation variant 1
-cargo run -- animate -v 1
-
-# Test animation variant 2
-cargo run -- animate -v 2
-
-# Test static frame
-cargo run -- "Hello World"
-```
+- **Adjust Speed:** After setup, edit `src/frames.rs` and change the interval values:
+  ```rust
+  interval_ms: Arc::new([100; 29]),  // Change 100 to 50 (faster) or 200 (slower)
+  ```
 
 ### Troubleshooting
 
-**"mismatched types" error:**
-- Check that array sizes match: `[&str; N]` and `[100; N]` must have the same N
-- Verify you have the correct number of `include_str!` entries
+**"ImageMagick not found"**
+- Install ImageMagick (see Prerequisites above)
+- Verify installation: `magick --version` or `convert --version`
 
-**Animation too fast/slow:**
-- Adjust the interval_ms values (lower = faster, higher = slower)
+**"No ASCII converter found"**
+- Install jp2a (Linux): `sudo apt install jp2a`
+- Or install ascii-image-converter (all platforms): `go install github.com/TheZoraiz/ascii-image-converter@latest`
 
-**Frames look distorted:**
-- Try different widths when converting (32, 48, 64, 80)
-- Some GIFs work better at different resolutions
+**Animation looks weird**
+- Try different ASCII widths: `./setup.sh mygif.gif toolname 50`
+- Simpler GIFs usually work better
+- Manually edit generated frames in the `frames/` directory if needed
 
-**Missing frames:**
-- Ensure frame numbering is correct (frame_000, frame_001, etc.)
-- Check that files are in the `frames/` directory
+**"mismatched types" error after running script**
+- This shouldn't happen with the automated script
+- If it does, see the Manual Setup section below
+
+---
+
+## Manual Setup (Advanced)
+
+The rest of this guide covers the manual process for advanced users who want more control or need to troubleshoot issues.
+
+**this guide is written with linux priority. I dont know how shite works on mac**

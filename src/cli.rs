@@ -1,9 +1,9 @@
 use clap::{Parser, Subcommand};
 
 #[derive(Parser)]
-#[command(name = "yisangsay")]
+#[command(name = "customsay")]
 #[command(
-    about = "Yisangsay is a CLI program like cowsay, but instead of a talking cow, it's Yi Sang from Limbus Company!"
+    about = "A customizable CLI program like cowsay - create your own animated ASCII art character from any GIF!"
 )]
 #[command(version)]
 pub struct Cli {
@@ -13,15 +13,15 @@ pub struct Cli {
 
 #[derive(Subcommand)]
 pub enum Commands {
-    /// Display Yi Sang saying the provided text
+    /// Display your character saying the provided text
     Say {
-        /// The text for Yi Sang to say
+        /// The text for your character to say
         text: String,
     },
 
-    /// Display an animated Yi Sang
+    /// Display an animated version of your character
     Animate {
-        /// The text for Yi Sang to say
+        /// Optional text for your character to say
         text: Option<String>,
     },
 }

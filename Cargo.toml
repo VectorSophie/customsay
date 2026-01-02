@@ -1,8 +1,8 @@
 [package]
-name = "yisangsay"
-version = "0.1.4"
+name = "customsay"
+version = "0.1.0"
 edition = "2021"
-description = "Yisangsay is a CLI program like cowsay, but instead of a talking cow, it's Yi Sang from Limbus Company!"
+description = "A customizable CLI program like cowsay - create your own animated ASCII art character from any GIF!"
 license = "GPL-3.0"
 repository = "https://github.com/VectorSophie/yisangsay-independent"
 authors = ["VectorSophie <jay7math@gmail.com>"]
@@ -17,13 +17,13 @@ tokio = { version = "~1.35.0", features = ["full"] }
 maintainer = "VectorSophie <jay7math@gmail.com>"
 copyright = "2024, VectorSophie <jay7math@gmail.com>"
 extended-description = """\
-Yisangsay is a fun CLI tool inspired by cowsay. \
-Instead of a cow, Yi Sang from Limbus Company delivers your messages \
-in ASCII art form with animations."""
+A customizable CLI tool inspired by cowsay. \
+Create your own animated ASCII art character from any GIF! \
+Easily convert any GIF into a personalized CLI tool."""
 depends = "$auto"
 section = "utils"
 priority = "optional"
 assets = [
-    ["target/release/yisangsay", "usr/bin/", "755"],
-    ["README.md", "usr/share/doc/yisangsay/", "644"],
+    ["target/release/customsay", "usr/bin/", "755"],
+    ["README.md", "usr/share/doc/customsay/", "644"],
 ]
