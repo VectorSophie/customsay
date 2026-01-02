@@ -1,7 +1,7 @@
 use clap::{Parser, Subcommand};
 
 #[derive(Parser)]
-#[command(name = "customsay")]
+#[command(name = "mycustomsay")]
 #[command(
     about = "A customizable CLI program like cowsay - create your own animated ASCII art character from any GIF!"
 )]

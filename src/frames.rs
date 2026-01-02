@@ -1,7 +1,7 @@
 use lazy_static::lazy_static;
 use std::sync::Arc;
 
-const ANIMATE_FRAMES_STR: [&str; 29] = [
+const ANIMATE_FRAMES_STR: [&str; 16] = [
     include_str!("../frames/frame_001.txt"),
     include_str!("../frames/frame_002.txt"),
     include_str!("../frames/frame_003.txt"),
@@ -18,19 +18,6 @@ const ANIMATE_FRAMES_STR: [&str; 29] = [
     include_str!("../frames/frame_014.txt"),
     include_str!("../frames/frame_015.txt"),
     include_str!("../frames/frame_016.txt"),
-    include_str!("../frames/frame_017.txt"),
-    include_str!("../frames/frame_018.txt"),
-    include_str!("../frames/frame_019.txt"),
-    include_str!("../frames/frame_020.txt"),
-    include_str!("../frames/frame_021.txt"),
-    include_str!("../frames/frame_022.txt"),
-    include_str!("../frames/frame_023.txt"),
-    include_str!("../frames/frame_024.txt"),
-    include_str!("../frames/frame_025.txt"),
-    include_str!("../frames/frame_026.txt"),
-    include_str!("../frames/frame_027.txt"),
-    include_str!("../frames/frame_028.txt"),
-    include_str!("../frames/frame_029.txt"),
 ];
 
 #[derive(Debug, Clone)]
@@ -91,7 +78,7 @@ lazy_static! {
             .collect::<Box<[Frame]>>();
         AnimatedFrames {
             frames: Arc::from(frames),
-            interval_ms: Arc::new([100; 29]),
+            interval_ms: Arc::new([100; 16]),
         }
     };
 }

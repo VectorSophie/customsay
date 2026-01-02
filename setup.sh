@@ -225,7 +225,7 @@ echo -e "${GREEN}✓${NC} Updated package name to: $TOOL_NAME"
 echo ""
 echo "Step 5: Updating CLI configuration..."
 
-sed -i.bak "s/#\[command(name = \".*\"\)\]/#[command(name = \"$TOOL_NAME\")]/" src/cli.rs
+sed -E -i.bak "s/#\[command\(name = \".*\"\)\]/#[command(name = \"$TOOL_NAME\")]/" src/cli.rs
 echo -e "${GREEN}✓${NC} Updated CLI name to: $TOOL_NAME"
 
 # Clean up backup files

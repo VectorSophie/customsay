@@ -36,17 +36,17 @@ sudo apt install imagemagick jp2a
    **Linux/macOS:**
    ```bash
    chmod +x setup.sh
-   ./setup.sh mygif.gif mycustomsay 64
+   ./setup.sh mygif.gif customsay 64
    ```
 
    **Windows:**
    ```powershell
-   .\setup.ps1 mygif.gif mycustomsay 64
+   .\setup.ps1 mygif.gif customsay 64
    ```
 
    **Parameters:**
    - `mygif.gif` - Path to your GIF file
-   - `mycustomsay` - Name for your CLI tool (optional, default: customsay)
+   - `customsay` - Name for your CLI tool (optional, default: customsay)
    - `64` - ASCII art width in characters (optional, default: 64)
 
 3. **Build and install:**
@@ -57,8 +57,8 @@ sudo apt install imagemagick jp2a
 
 4. **Enjoy!**
    ```bash
-   mycustomsay animate "Hello World!"
-   mycustomsay say "I made this!"
+   customsay animate "Hello World!"
+   customsay say "I made this!"
    ```
 
 ### What the Script Does

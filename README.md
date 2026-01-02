@@ -17,17 +17,17 @@ Want to create your own version with a different character? You can easily conve
    **Linux/macOS:**
    ```sh
    chmod +x setup.sh
-   ./setup.sh mygif.gif mycustomsay 64
+   ./setup.sh mygif.gif customsay 64
    ```
 
    **Windows (PowerShell):**
    ```powershell
-   .\setup.ps1 mygif.gif mycustomsay 64
+   .\setup.ps1 mygif.gif customsay 64
    ```
 
    Parameters:
    - `mygif.gif` - Path to your GIF file
-   - `mycustomsay` - Name for your CLI tool (optional, default: customsay)
+   - `customsay` - Name for your CLI tool (optional, default: customsay)
    - `64` - ASCII art width in characters (optional, default: 64)
 
 4. **Test and build:**
@@ -39,7 +39,7 @@ Want to create your own version with a different character? You can easily conve
 
 5. **Use your custom tool:**
    ```sh
-   mycustomsay animate "Your message here"
+   customsay animate "Your message here"
    ```
 
 ### Prerequisites
