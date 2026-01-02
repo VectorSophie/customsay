@@ -44,7 +44,14 @@ Want to create your own version with a different character? You can easily conve
 
 ### Prerequisites
 
-The setup script requires:
+**Required for building and running:**
+- **Rust & Cargo** - For compiling the tool
+  - Windows: `choco install rustup.install` or download from https://rustup.rs/
+  - macOS: `brew install rustup` or `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
+  - Linux: `sudo apt install rustup` or `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
+  - After installing rustup, run: `rustup default stable`
+
+**Required for the setup script:**
 - **ImageMagick** - For extracting GIF frames
   - Windows: `choco install imagemagick`
   - macOS: `brew install imagemagick`

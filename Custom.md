@@ -12,18 +12,36 @@ Install these tools first:
 
 **Windows:**
 ```powershell
+# Install Rust & Cargo
+choco install rustup.install
+# After installation, run in a new terminal:
+rustup default stable
+
+# Install setup script dependencies
 choco install imagemagick
 go install github.com/TheZoraiz/ascii-image-converter@latest
 ```
 
 **macOS:**
 ```bash
+# Install Rust & Cargo
+brew install rustup
+rustup default stable
+# Or use: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+# Install setup script dependencies
 brew install imagemagick
 go install github.com/TheZoraiz/ascii-image-converter@latest
 ```
 
 **Linux (Ubuntu/Debian):**
 ```bash
+# Install Rust & Cargo
+sudo apt install rustup
+rustup default stable
+# Or use: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+# Install setup script dependencies
 sudo apt install imagemagick jp2a
 ```
 
@@ -100,6 +118,19 @@ The setup script automatically:
   ```
 
 ### Troubleshooting
+
+**"rustup could not choose a version of cargo to run"**
+- Run: `rustup default stable`
+- This sets up the Rust toolchain needed to compile the program
+
+**"cargo: command not found"**
+- Install Rust/Cargo (see Prerequisites above)
+- After installation, restart your terminal or run: `source $HOME/.cargo/env`
+
+**"unexpected argument '--animate' found" when running `cargo run --animate`**
+- Use `--` to separate cargo arguments from program arguments
+- Correct: `cargo run -- animate "Hello"`
+- Incorrect: `cargo run --animate "Hello"`
 
 **"ImageMagick not found"**
 - Install ImageMagick (see Prerequisites above)
