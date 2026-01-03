@@ -17,7 +17,7 @@ if [ -z "$1" ]; then
     echo -e "${RED}Error: No GIF file specified${NC}"
     echo "Usage: ./setup.sh <path-to-gif> [name] [width]"
     echo ""
-    echo "Example: ./setup.sh mygif.gif mycustomsay 64"
+    echo "Example: ./setup.sh mygif.gif customsay 64"
     echo "  - path-to-gif: Path to your GIF file"
     echo "  - name: (optional) Name for your CLI tool (default: customsay)"
     echo "  - width: (optional) ASCII art width in characters (default: 64)"
